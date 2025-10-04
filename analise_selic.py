@@ -1,7 +1,6 @@
 import pandas as pd
 import requests
 from datetime import datetime
-# Adicione as importações para visualização
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -34,25 +33,33 @@ try:
     
     print("\nDados prontos para análise!")
     
-    # --- 3. NOVA SEÇÃO: VISUALIZAÇÃO HISTÓRICA ---
+    # --- 3. VISUALIZAÇÃO HISTÓRICA ---
     print("\nGerando gráfico da Taxa Selic histórica...")
-
-    # Define um estilo visual para o gráfico
     sns.set_theme(style="whitegrid")
-
-    # Cria a "tela" do gráfico com um tamanho apropriado
     plt.figure(figsize=(14, 8))
-
-    # Desenha o gráfico de linha, adaptando os títulos e a cor
     sns.lineplot(data=df_selic, x=df_selic.index, y='selic', color='purple', linewidth=2)
     plt.title(f'Taxa Selic Diária (Anualizada) desde {DATA_INICIO}', fontsize=16, weight='bold')
     plt.xlabel('Data', fontsize=12)
     plt.ylabel('Taxa de Juros Anual (%)', fontsize=12)
-
-    # Exibe o gráfico em uma nova janela
     plt.show()
-    # ----------------------------------------------
-    
+
+    # --- 4. NOVA SEÇÃO: ANÁLISE DE PICOS (EXTREMOS) ---
+    print("\nCalculando os valores extremos do período...")
+
+    # Encontra o valor máximo e a data em que ocorreu
+    pico_maximo = df_selic['selic'].max()
+    data_pico_maximo = df_selic['selic'].idxmax()
+
+    # Encontra o valor mínimo e a data em que ocorreu
+    pico_minimo = df_selic['selic'].min()
+    data_pico_minimo = df_selic['selic'].idxmin()
+
+    # Imprime os resultados formatados
+    print("\n--- Análise de Picos da Selic ---")
+    print(f"A Selic atingiu sua MAIOR taxa de {pico_maximo:.2f}% ao ano no dia {data_pico_maximo.strftime('%d/%m/%Y')}.")
+    print(f"A Selic atingiu sua MENOR taxa de {pico_minimo:.2f}% ao ano no dia {data_pico_minimo.strftime('%d/%m/%Y')}.")
+    # ---------------------------------------------------
+
 except Exception as e:
     print(f"Ocorreu um erro: {e}")
 
