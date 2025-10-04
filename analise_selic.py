@@ -43,24 +43,40 @@ try:
     plt.ylabel('Taxa de Juros Anual (%)', fontsize=12)
     plt.show()
 
-    # --- 4. NOVA SEÇÃO: ANÁLISE DE PICOS (EXTREMOS) ---
+    # --- 4. ANÁLISE DE PICOS (EXTREMOS) ---
     print("\nCalculando os valores extremos do período...")
-
-    # Encontra o valor máximo e a data em que ocorreu
     pico_maximo = df_selic['selic'].max()
     data_pico_maximo = df_selic['selic'].idxmax()
-
-    # Encontra o valor mínimo e a data em que ocorreu
     pico_minimo = df_selic['selic'].min()
     data_pico_minimo = df_selic['selic'].idxmin()
-
-    # Imprime os resultados formatados
+    
     print("\n--- Análise de Picos da Selic ---")
     print(f"A Selic atingiu sua MAIOR taxa de {pico_maximo:.2f}% ao ano no dia {data_pico_maximo.strftime('%d/%m/%Y')}.")
     print(f"A Selic atingiu sua MENOR taxa de {pico_minimo:.2f}% ao ano no dia {data_pico_minimo.strftime('%d/%m/%Y')}.")
-    # ---------------------------------------------------
+
+    # --- 5. NOVA SEÇÃO: ANÁLISE DE TENDÊNCIA COM MÉDIAS MÓVEIS ---
+    print("\nCalculando médias móveis para identificar tendências...")
+    # Calcula a média móvel dos últimos 90 e 180 dias
+    df_selic['media_movel_90d'] = df_selic['selic'].rolling(window=90).mean()
+    df_selic['media_movel_180d'] = df_selic['selic'].rolling(window=180).mean()
+    
+    print("Gerando gráfico de tendências...")
+    plt.figure(figsize=(14, 8))
+    # Plota a taxa diária (com mais transparência)
+    sns.lineplot(data=df_selic, x=df_selic.index, y='selic', label='Taxa Selic Diária', color='grey', alpha=0.4)
+    # Plota as médias móveis por cima
+    sns.lineplot(data=df_selic, x=df_selic.index, y='media_movel_90d', label='Tendência (Média de 90 dias)', color='blue', linewidth=2.5)
+    sns.lineplot(data=df_selic, x=df_selic.index, y='media_movel_180d', label='Tendência (Média de 180 dias)', color='darkred', linewidth=2.5)
+    
+    plt.title('Tendência da Taxa Selic com Médias Móveis', fontsize=18, weight='bold')
+    plt.xlabel('Data', fontsize=12)
+    plt.ylabel('Taxa de Juros Anual (%)', fontsize=12)
+    plt.legend() # Mostra a legenda das cores
+    plt.grid(True)
+    plt.show()
+    # ----------------------------------------------------------------
 
 except Exception as e:
     print(f"Ocorreu um erro: {e}")
 
-print("\nScript finalizado.")
+print("\nAnálise completa finalizada.")
