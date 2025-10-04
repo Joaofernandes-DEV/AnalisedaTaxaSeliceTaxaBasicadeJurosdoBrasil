@@ -1,7 +1,3 @@
-Com certeza. Aqui está um `README.md` para o projeto da Taxa Selic, seguindo a mesma estrutura e estilo do `README` do projeto do Dólar.
-
----
-
 # Análise da Taxa Selic com Dados do Banco Central do Brasil
 
 ## Descrição
